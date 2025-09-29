@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Perpetual Counter</title>
+    <style>
+        /* Basic Styling */
+        body {
+            background-color: #121212;
+            color: #EAEAEA;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        /* Container for the counter */
+        .counter-container {
+            padding: 40px;
+            border-radius: 15px;
+            background-color: #1E1E1E;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #FFFFFF;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #A0A0A0;
+            margin-bottom: 30px;
+        }
+        
+        /* The main timer display */
+        #timer {
+            font-size: 3rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Space between time blocks */
+        }
+        
+        /* Individual time blocks (e.g., for days, hours) */
+        .time-block {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .time-value {
+            padding: 15px;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            min-width: 100px; /* Ensures blocks have a consistent width */
+        }
+
+        .time-label {
+            font-size: 1rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+            color: #A0A0A0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="counter-container">
+        <h1>Time Since</h1>
+        <p>November 30, 2024</p>
+        <div id="timer">
+            <div class="time-block">
+                <span id="days" class="time-value">0</span>
+                <span class="time-label">Days</span>
+            </div>
+            <div class="time-block">
+                <span id="hours" class="time-value">0</span>
+                <span class="time-label">Hours</span>
+            </div>
+            <div class="time-block">
+                <span id="minutes" class="time-value">0</span>
+                <span class="time-label">Minutes</span>
+            </div>
+            <div class="time-block">
+                <span id="seconds" class="time-value">0</span>
+                <span class="time-label">Seconds</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set the date we're counting from
+        const startDate = new Date("2024-11-30T00:00:00").getTime();
+
+        // Get references to the HTML elements where we'll display the time
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minutesEl = document.getElementById('minutes');
+        const secondsEl = document.getElementById('seconds');
+
+        // Update the count down every 1 second
+        const interval = setInterval(function() {
+            // Get today's date and time (in milliseconds)
+            const now = new Date().getTime();
+            
+            // Find the distance between now and the start date
+            const distance = now - startDate;
+            
+            // If the start date is in the future, display 0s
+            if (distance < 0) {
+                daysEl.innerText = '0';
+                hoursEl.innerText = '0';
+                minutesEl.innerText = '0';
+                secondsEl.innerText = '0';
+                return; // Stop the calculation until the date is reached
+            }
+            
+            // Time calculations for days, hours, minutes and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Function to add a leading zero if the number is less than 10
+            const formatTime = (time) => time < 10 ? `0${time}` : time;
+
+            // Display the result in the elements
+            daysEl.innerText = days;
+            hoursEl.innerText = formatTime(hours);
+            minutesEl.innerText = formatTime(minutes);
+            secondsEl.innerText = formatTime(seconds);
+
+        }, 1000); // 1000ms = 1 second
+    </script>
+
+</body>
+</html>
